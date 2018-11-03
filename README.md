@@ -1,0 +1,1 @@
+![click on the clock number](./clickClock.gif)

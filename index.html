@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Making SVG clickable.</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 style="text-align: center; font-weight: bold">Full Wedge Clock</h3>
+                <object data="Full_Wedge_Visible.svg" type="image/svg+xml" id="fullWedgeClock" width="100%" height="100%"></object>
+            </div>
+            <div class="col-sm-6">
+                <h3 style="text-align: center; font-weight: bold">Outer Half Wedge and Inner Half Wedge</h3>
+                <object data="Half_Wedge_Visible.svg" type="image/svg+xml" id="halfWedgeClock" width="100%" height="100%"></object>
+            </div>
+        </div>
+        <audio id="bubblePop">
+            <source src="bubblePop.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        $( document ).ready(function() {
+            var fullElm = document.getElementById("fullWedgeClock");
+            var halfElm = document.getElementById("halfWedgeClock");
+            var audio = document.getElementById("bubblePop");
+
+            fullElm.addEventListener("load", function() {
+                var svgDoc = fullElm.contentDocument;
+                var svgRoot = svgDoc.documentElement;
+
+                $("[id^='Full_White_Color_Wedge_']", svgRoot).css('opacity', 0);
+
+                // click on the Full Wedge region
+                $("[id^='Full_White_Color_Wedge_']", svgRoot).click(function() { 
+                    $("[id^='Full_White_Color_Wedge_']", svgRoot).css('opacity', 0);
+                    $(this).css('opacity', 1);
+                    audio.play();
+                });
+
+                // click on the Outer Number
+                $("#Outer_Clock_Numbers", svgRoot).children().children().click(function() {
+                    var outerNumerId = $(this).attr('id');
+                    var num = outerNumerId.split("_").slice(-2)[0];
+
+                    $("[id^='Full_White_Color_Wedge_']", svgRoot).css('opacity', 0);
+                    $("#Full_White_Color_Wedge_" + num, svgRoot).css('opacity', 1);
+                    audio.play();
+                });
+            }, false);
+
+            halfElm.addEventListener("load", function() {
+                var svgDoc = halfElm.contentDocument;
+                var svgRoot = svgDoc.documentElement;
+
+                $("[id^='Outer_Clock_Wedge_']", svgRoot).css('opacity', 0);
+                $("[id^='Inner_Clock_Wedge_']", svgRoot).css('opacity', 0);
+
+                // click on the Outer Half Wedge region
+                $("[id^='Outer_Clock_Wedge_']", svgRoot).click(function() { 
+                    $("[id^='Outer_Clock_Wedge_']", svgRoot).css('opacity', 0);
+                    $(this).css('opacity', 1);
+                    audio.play();
+                });
+                
+                // click on the Outer Number
+                $("#Outer_Clock_Numbers", svgRoot).children().children().click(function() {
+                    var outerNumerId = $(this).attr('id');
+                    var num = outerNumerId.split("_").slice(-2)[0];
+
+                    $("[id^='Outer_Clock_Wedge_']", svgRoot).css('opacity', 0);
+                    $("#Outer_Clock_Wedge_" + num, svgRoot).css('opacity', 1);
+                    audio.play();
+                });
+
+                // click on the Inner Half Wedge region
+                $("[id^='Inner_Clock_Wedge_']", svgRoot).click(function() { 
+                    $("[id^='Inner_Clock_Wedge_']", svgRoot).css('opacity', 0);
+                    $(this).css('opacity', 1);
+                    audio.play();
+                });
+
+                // click on the Inner Number
+                $("#Inner_Clock_Numbers", svgRoot).children().children().click(function() {
+                    var outerNumerId = $(this).attr('id');
+                    var num = outerNumerId.split("_").slice(-2)[0];
+
+                    $("[id^='Inner_Clock_Wedge_']", svgRoot).css('opacity', 0);
+                    $("#Inner_Clock_Wedge_" + num, svgRoot).css('opacity', 1);
+                    audio.play();
+                });
+            }, false);
+        });
+    </script>
+</body>
+</html>
